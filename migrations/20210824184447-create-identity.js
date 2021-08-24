@@ -1,36 +1,33 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('academic_records', {
+    await queryInterface.createTable('identities', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user: {
+      user_uid: {
         type: Sequelize.STRING
       },
-      class: {
+      id_no: {
         type: Sequelize.STRING
       },
-      session: {
+      id_type: {
         type: Sequelize.STRING
       },
-      hod: {
+      issue_place: {
         type: Sequelize.STRING
       },
-      apply_as: {
+      issuer: {
         type: Sequelize.STRING
       },
-      study_mode: {
-        type: Sequelize.STRING
+      issue_date: {
+        type: Sequelize.DATE
       },
-      description: {
-        type: Sequelize.TEXT
-      },
-      isActive: {
-        type: Sequelize.BOOLEAN
+      expiry_date: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +40,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('academic_records');
+    await queryInterface.dropTable('identities');
   }
 };

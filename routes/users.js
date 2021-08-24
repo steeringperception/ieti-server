@@ -21,6 +21,7 @@ const userTypeAllowedParams = (req, res, next) => {
 router.get('/', users.getUsers);
 router.post('/', allowedRoles(['admin', 'hr', 'registrar'], 'uid'), users.setUser);
 router.get('/refresh', users.refreshUserData);
+router.get('/by-uid/:uid', allowedRoles(['admin', 'accountant', 'registrar'], 'uid'), users.getUserByUid);
 router.get('/address/:uid', address.getAddress);
 router.post('/address/:uid', address.setAddress);
 router.get('/academics/:uid', acadamics.getAcademic);

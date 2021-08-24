@@ -28,19 +28,20 @@ module.exports = {
 
   },
   changeSecurity: (req, res, next) => {
-    let { password, confirm_password, oldPassword } = req.body || {};
-    if (password !== confirm_password) {
+    let { new_password, confirm_password, current_password } = req.body || {};
+    if (new_password !== confirm_password) {
       return res.status(403).send({ error: 'password and confirm_password should be equal' })
     }
     return db.user.scope('').findOne({ where: { uid: req.user.uid } })
-      .then(r => {
-        bcrypt.compare(data.password, data.hash, (err, result) => {
+      .then(async (r) => {
+        bcrypt.compare(current_password, r.password, async (err, result) => {
           if (!!result) {
+            let password = await bcrypt.hash(new_password, 10);
             return r.update({ password })
               .then(() => res.send({ satus: true, message: 'Password updated successfully' }))
               .catch(e => res.status(400).send(e))
           } else {
-            return res.status(403).send({ error: "oldPassword is incorrect" })
+            return res.status(403).send({ error: "Current Password is incorrect" })
           }
         })
       })

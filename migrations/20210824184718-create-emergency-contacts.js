@@ -1,36 +1,39 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('academic_records', {
+    await queryInterface.createTable('emergency_contacts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user: {
+      user_uid: {
         type: Sequelize.STRING
       },
-      class: {
+      firstName: {
         type: Sequelize.STRING
       },
-      session: {
+      lastName: {
         type: Sequelize.STRING
       },
-      hod: {
+      city: {
         type: Sequelize.STRING
       },
-      apply_as: {
+      country: {
         type: Sequelize.STRING
       },
-      study_mode: {
+      mobile: {
+        type: Sequelize.INTEGER
+      },
+      telephone: {
         type: Sequelize.STRING
       },
-      description: {
-        type: Sequelize.TEXT
+      email: {
+        type: Sequelize.STRING
       },
-      isActive: {
-        type: Sequelize.BOOLEAN
+      relation: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +46,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('academic_records');
+    await queryInterface.dropTable('emergency_contacts');
   }
 };

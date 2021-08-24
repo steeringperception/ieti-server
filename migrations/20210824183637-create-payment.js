@@ -1,36 +1,36 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('academic_records', {
+    await queryInterface.createTable('payments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user: {
+      admission_no: {
         type: Sequelize.STRING
       },
-      class: {
+      total_amount: {
+        type: Sequelize.INTEGER
+      },
+      paid_amount: {
+        type: Sequelize.INTEGER
+      },
+      payment_mode: {
         type: Sequelize.STRING
       },
-      session: {
+      payment_cause: {
         type: Sequelize.STRING
       },
-      hod: {
+      note: {
         type: Sequelize.STRING
       },
-      apply_as: {
+      academic_year: {
         type: Sequelize.STRING
       },
-      study_mode: {
+      accountant: {
         type: Sequelize.STRING
-      },
-      description: {
-        type: Sequelize.TEXT
-      },
-      isActive: {
-        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +43,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('academic_records');
+    await queryInterface.dropTable('payments');
   }
 };
