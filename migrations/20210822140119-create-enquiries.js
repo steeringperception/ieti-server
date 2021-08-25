@@ -12,10 +12,7 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING
       },
-      firstName: {
-        type: Sequelize.STRING
-      },
-      lastName: {
+      name: {
         type: Sequelize.STRING
       },
       email: {
@@ -24,28 +21,19 @@ module.exports = {
       phone: {
         type: Sequelize.STRING
       },
-      fatherName: {
-        type: Sequelize.STRING
-      },
-      motherName: {
-        type: Sequelize.STRING
-      },
       gender: {
+        type: Sequelize.STRING
+      },
+      course: {
+        type: Sequelize.STRING
+      },
+      degree: {
         type: Sequelize.STRING
       },
       dob: {
         type: Sequelize.STRING
       },
       status: {
-        type: Sequelize.STRING
-      },
-      alternateContact: {
-        type: Sequelize.STRING
-      },
-      datadump: {
-        type: Sequelize.JSON
-      },
-      picture: {
         type: Sequelize.STRING
       },
       createdAt: {

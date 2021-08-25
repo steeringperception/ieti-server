@@ -18,11 +18,30 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
       this.hasOne(models.academicRecord, {
-        foreignKey: 'user', as: "academicRecord"
+        foreignKey: 'user',
+        sourceKey: 'uid',
+        as: "academicRecord"
       });
       this.hasOne(models.address, {
-        foreignKey: 'user_uid', as: "address"
+        foreignKey: 'user_uid',
+        sourceKey: 'uid',
+        as: "address"
       });
+      this.hasMany(models.education, {
+        sourceKey: 'uid',
+        foreignKey: 'user_uid',
+        as: "education"
+      });
+      this.hasMany(models.identity, {
+        foreignKey: 'user_uid',
+        sourceKey: 'uid',
+        as: "identity"
+      });
+      this.hasOne(models.emergency_contacts, {
+        foreignKey: 'user_uid',
+        sourceKey: 'uid',
+        as: "emergency_contact"
+      })
     }
   };
   user.init({
@@ -47,11 +66,14 @@ module.exports = (sequelize, DataTypes) => {
     lastLogin: { type: DataTypes.DATE },
     status: { type: DataTypes.BOOLEAN },
     picture: { type: DataTypes.STRING },
+    faxNo: { type: DataTypes.STRING },
+    postboxNo: { type: DataTypes.INTEGER },
+    birthPlace: { type: DataTypes.STRING },
   }, {
     sequelize,
     modelName: 'user',
     defaultScope: {
-      attributes: { exclude: ['createdAt', 'updatedAt', 'password', 'id', 'status'] }
+      attributes: { exclude: ['updatedAt', 'password', 'id', 'status'] }
     },
     scopes: {
       profile: {

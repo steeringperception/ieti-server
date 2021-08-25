@@ -38,6 +38,29 @@ module.exports = {
     return db.user.findOne({ where: { uid: req.params.uid } })
       .then(r => res.send(r))
       .catch(e => res.status(400).send({ error: `${e}` }))
+  },
+  getEnrolment: (req, res, next) => {
+    db.user.findOne({
+      where: { uid: req.params.uid },
+      include: ['identity', 'education', 'academicRecord', 'emergency_contact']
+    }).then(r => res.send(r))
+      .catch(e => res.status(400).send({ error: `${e}` }))
+  },
+  setEnrolment: (req, res, next) => {
+    let data = req.body || {};
+    if (!!!data.uid) {
+      data.uid = base.decTo62(Date.now());
+    }
+    if (!!!data.gender) {
+      data.gender = "";
+    }
+    if (!!!data.role) {
+      data.role = "student";
+    }
+    db.user.create(data, {
+      include: ['identity', 'education', 'academicRecord', 'emergency_contact']
+    }).then(r => res.send(r))
+      .catch(e => res.sendError(e))
   }
 
 }

@@ -21,10 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     apply_as: DataTypes.STRING,
     study_mode: DataTypes.STRING,
     isActive: DataTypes.BOOLEAN,
-    description: DataTypes.TEXT
+    description: DataTypes.TEXT,
+    year: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'academicRecord',
+    tableName: 'academic_records',
   });
   return academicRecord;
 };

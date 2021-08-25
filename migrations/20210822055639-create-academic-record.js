@@ -29,6 +29,9 @@ module.exports = {
       description: {
         type: Sequelize.TEXT
       },
+      year: {
+        type: Sequelize.TEXT
+      },
       isActive: {
         type: Sequelize.BOOLEAN
       },

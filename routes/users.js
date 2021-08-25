@@ -28,7 +28,9 @@ router.get('/academics/:uid', acadamics.getAcademic);
 router.post('/academics/:uid', acadamics.setAcademic);
 router.get('/enquiries', allowedRoles(['admin', 'hr', 'registrar']), enquiry.getUsers);
 router.get('/enquiry/:uid', allowedRoles(['admin', 'hr', 'registrar']), enquiry.getUser);
-router.post('/enquiry', enquiry.setUser);
+router.post('/enquiry', users.setUser);
+router.get('/enrollment/:uid', users.getEnrolment);
+router.post('/enrollment', users.setEnrolment);
 router.get('/:role', userTypeAllowedParams, users.getUsers);
 
 module.exports = router;

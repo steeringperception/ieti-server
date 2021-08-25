@@ -14,6 +14,9 @@ module.exports = {
       institute: {
         type: Sequelize.STRING
       },
+      lavel: {
+        type: Sequelize.STRING
+      },
       place: {
         type: Sequelize.STRING
       },

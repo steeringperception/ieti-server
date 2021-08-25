@@ -15,21 +15,20 @@ module.exports = (sequelize, DataTypes) => {
   };
   enquiry.init({
     uid: { type: DataTypes.STRING, unique: true, allowNull: false },
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    name: DataTypes.STRING,
     email: DataTypes.STRING,
     phone: DataTypes.STRING,
-    fatherName: DataTypes.STRING,
-    motherName: DataTypes.STRING,
     gender: DataTypes.STRING,
     dob: DataTypes.STRING,
     status: DataTypes.STRING,
-    alternateContact: DataTypes.STRING,
-    datadump: DataTypes.JSON,
-    picture: DataTypes.STRING
+    course: DataTypes.STRING,
+    degree: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'enquiry',
+    defaultScope: {
+      attributes: { exclude: ['updatedAt'] }
+    }
   });
   return enquiry;
 };
