@@ -35,7 +35,7 @@ module.exports = {
       .catch(e => res.status(400).send({ error: `${e}` }))
   },
   getUserByUid: (req, res, next) => {
-    return db.user.findOne({ where: { uid: req.params.uid } })
+    return db.user.findOne({ where: { uid: req.params.uid, role: 'student' } })
       .then(r => res.send(r))
       .catch(e => res.status(400).send({ error: `${e}` }))
   },
