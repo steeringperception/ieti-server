@@ -2,8 +2,23 @@ const db = require('../models')
 
 module.exports = {
   getPayments: async (req, res, next) => {
-    return db.payment.findAll({ where: { payment_mode: `${req.params.mode}` } })
-      .then(ress => res.send(ress))
+    let params = req.params || {};
+    // let where = {};
+    // if (params.mode) {
+    //   where.payment_mode = `${params.mode}`;
+    // }
+    // if (params.uid) {
+    //   where.admission_no = `${params.uid}`;
+    // }
+    console.log(params)
+    let sql = `SELECT p.admission_no,paid_amount,payment_mode,payment_cause,p.createdAt,firstName,lastName,email,class,course,academic_year FROM payments p
+            JOIN users u ON u.uid = p.admission_no
+            LEFT JOIN academic_records ar ON ar.user = p.admission_no
+            where payment_mode like "%${(params.mode || '')}%" and admission_no like "%${(params.uid || '')}"`;
+    // return db.payment.findAll({ wheres })
+    return db.sequelize.query(sql)
+      // .spread((r, m) => r)
+      .then(ress => res.send(ress[0]))
       .catch(e => res.status(400).send({ error: `${e}` }))
   },
   setPayments: async (req, res, next) => {

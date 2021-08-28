@@ -14,6 +14,9 @@ module.exports = {
       class: {
         type: Sequelize.STRING
       },
+      course: {
+        type: Sequelize.STRING
+      },
       session: {
         type: Sequelize.STRING
       },

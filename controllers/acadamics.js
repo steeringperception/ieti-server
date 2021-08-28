@@ -12,7 +12,7 @@ module.exports = {
     db.academicRecord.findOrCreate({ where: { user: req.params.uid }, defaults: data })
       .then(async (r) => {
         await r[0].update(data)
-        return res.send(r)
+        return res.send(r[0])
       })
       .catch(e => res.sendError(e))
   }

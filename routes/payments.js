@@ -16,14 +16,15 @@ const userTypeAllowedParams = (req, res, next) => {
 
 router.get('/', allowedRoles(['accountant', 'registrar', 'admin']), payments.getPayments);
 router.post('/', allowedRoles(['accountant', 'registrar', 'admin']), payments.setPayments);
-router.get('/:mode', (req, res, next) => {
+router.get('/online/:mode?', (req, res, next) => {
   req.params.mode = 'online';
   next()
 }, allowedRoles(['accountant', 'registrar', 'admin']), payments.getPayments);
-router.get('/:mode', (req, res, next) => {
+router.get('/cash/:mode?', (req, res, next) => {
   req.params.mode = 'cash';
   next()
 }, allowedRoles(['accountant', 'registrar', 'admin']), payments.getPayments);
+router.get('by-uid/:uid', allowedRoles(['accountant', 'registrar', 'admin'], "uid"), payments.getPayments);
 
 
 module.exports = router;

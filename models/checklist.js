@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class identity extends Model {
+  class checklist extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,20 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  identity.init({
+  checklist.init({
     user_uid: DataTypes.STRING,
-    id_no: DataTypes.STRING,
-    id_type: DataTypes.STRING,
-    issue_place: DataTypes.STRING,
-    issuer: DataTypes.STRING,
-    issue_date: DataTypes.DATE,
-    expiry_date: DataTypes.DATE
+    checklist: DataTypes.JSON
   }, {
     sequelize,
-    modelName: 'identity',
-    defaultScope: {
-      order: ['id', 'ASC']
-    }
+    modelName: 'checklist',
   });
-  return identity;
+  return checklist;
 };

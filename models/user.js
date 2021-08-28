@@ -41,7 +41,17 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_uid',
         sourceKey: 'uid',
         as: "emergency_contact"
-      })
+      });
+      this.hasOne(models.checklist, {
+        foreignKey: 'user_uid',
+        sourceKey: 'uid',
+        as: "checklist"
+      });
+      this.hasMany(models.payment, {
+        foreignKey: 'admission_no',
+        sourceKey: 'uid',
+        as: "payments"
+      });
     }
   };
   user.init({
@@ -69,6 +79,7 @@ module.exports = (sequelize, DataTypes) => {
     faxNo: { type: DataTypes.STRING },
     postboxNo: { type: DataTypes.INTEGER },
     birthPlace: { type: DataTypes.STRING },
+    approvalDate: { type: DataTypes.DATE },
   }, {
     sequelize,
     modelName: 'user',

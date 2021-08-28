@@ -4,7 +4,7 @@
     "password": null,
     "database": "ieti",
     "host": "127.0.0.1",
-    "dialect": "mysql",
+    "dialect": "mariadb",
     "logging": false
   },
   "test": {
@@ -15,10 +15,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "doctyAnurag",
-    "password": "Anurag123",
-    "database": "test2",
-    "host": "docty.cvpqhk0vnc1l.us-east-2.rds.amazonaws.com",
+    "username": "admin",
+    "password": "xpfVcjsIKAmQ2N8eUwGT",
+    "database": "ieti",
+    "host": "ieti.cifbesxhagnh.us-east-2.rds.amazonaws.com",
     "dialect": "mysql"
   }
 }

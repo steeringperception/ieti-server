@@ -23,9 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     course: DataTypes.STRING,
     degree: DataTypes.STRING,
+    deletedAt: DataTypes.DATE,
   }, {
     sequelize,
     modelName: 'enquiry',
+    paranoid: true,
     defaultScope: {
       attributes: { exclude: ['updatedAt'] }
     }

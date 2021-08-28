@@ -40,6 +40,15 @@ module.exports = {
       phone: {
         type: Sequelize.STRING, allowNull: false, unique: true
       },
+      faxNo: {
+        type: Sequelize.STRING, allowNull: false, unique: true
+      },
+      birthPlace: {
+        type: Sequelize.STRING, allowNull: false, unique: true
+      },
+      postboxNo: {
+        type: Sequelize.INTEGER, allowNull: false, unique: true
+      },
       password: {
         type: Sequelize.STRING
       },
@@ -60,6 +69,10 @@ module.exports = {
         type: Sequelize.DATE
       },
       updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      approvalDate: {
         allowNull: false,
         type: Sequelize.DATE
       }

@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   academicRecord.init({
     user: DataTypes.STRING,
     class: DataTypes.STRING,
+    course: DataTypes.STRING,
     session: DataTypes.STRING,
     hod: DataTypes.STRING,
     apply_as: DataTypes.STRING,
