@@ -9,9 +9,7 @@ module.exports = {
     let query = req.qyery || {};
     if (!!query.status && query.status == 'closed') {
       where.status = 1
-      console.log(1)
     } else {
-      console.log(2)
       where = { [Op.or]: [{ status: 0 }, { status: null }] }
     }
     db.enquiry.findAll({

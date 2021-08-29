@@ -4,7 +4,10 @@ var user = require('./users')
 var utility = require('../controllers/utility');
 var authentication = require('../controllers/authentication');
 var enquiry = require('../controllers/enquiry');
+var file = require('./file');
 var payments = require('./payments');
+var test = require('./test');
+
 const { auth } = require('../middleware/auth');
 
 router.get('/essential-list', utility.getGlobalList)
@@ -13,5 +16,8 @@ router.post('/login', authentication.login)
 router.post('/update-security', auth, authentication.changeSecurity)
 router.use('/users', auth, user);
 router.use('/payments', auth, payments);
+
+router.use('/files', file)
+router.use('/test', test)
 
 module.exports = router;
