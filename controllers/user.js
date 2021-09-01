@@ -117,7 +117,7 @@ module.exports = {
         {
           model: db.user_meta, as: 'user_meta', required: false,
           where: {
-            keyword: { [Op.in]: ['approved_by', 'enrolled_by'] }
+            keyword: { [Op.in]: ['approved_by', 'enrolled_by', 'reject_resion'] }
           }
         }
       ]
