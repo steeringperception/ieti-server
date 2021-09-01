@@ -57,10 +57,25 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'uid',
         as: "payments"
       });
+      this.hasOne(models.payment, {
+        foreignKey: 'admission_no',
+        sourceKey: 'uid',
+        as: "payment"
+      });
       this.hasMany(models.user_meta, {
         foreignKey: 'user_uid',
         sourceKey: 'uid',
         as: "user_meta"
+      });
+      this.hasMany(models.document, {
+        foreignKey: 'user_uid',
+        sourceKey: 'uid',
+        as: "documents"
+      });
+      this.hasOne(models.user_meta, {
+        foreignKey: 'user_uid',
+        sourceKey: 'uid',
+        as: "userMeta"
       });
     }
   };
@@ -94,7 +109,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'user',
     defaultScope: {
-      attributes: { exclude: ['updatedAt', 'password', 'id', 'status'] }
+      attributes: { exclude: ['updatedAt', 'password', 'id'] }
     },
     scopes: {
       profile: {

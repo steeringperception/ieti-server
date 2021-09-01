@@ -9,7 +9,8 @@ async function getAdmissionNo(name, year, course) {
     index = parseInt(ls.last_index) + 1;
   }
   index = ('000' + index).substr(-3);
-  let no = `${name.substr(0, 1)}${year.toString().substr(-2)}${course}${index}`
+  let no = `${name.substr(0, 1)}${year.toString().substr(-2)}${course}${index}`;
+  console.log(name, year, course)
   return { uid: no, index }
 }
 
@@ -46,6 +47,10 @@ module.exports = {
         as: 'academicRecord',
         model: db.academicRecord,
         attributes: ['user', 'course', 'session', 'year']
+      }, {
+        model: db.payment, as: 'payment', required: false,
+        where: { payment_cause: 'admission_fees' },
+        attributes: ['admission_no', 'accountant']
       }]
     })
       .then(r => res.send(r))
@@ -108,7 +113,7 @@ module.exports = {
   getEnrolment: (req, res, next) => {
     db.user.findOne({
       where: { uid: req.params.uid },
-      include: ['identity', 'education', 'academicRecord', 'emergency_contact', 'checklist', 'experience',
+      include: ['identity', 'education', 'academicRecord', 'emergency_contact', 'checklist', 'experience', 'documents',
         {
           model: db.user_meta, as: 'user_meta', required: false,
           where: {
@@ -123,7 +128,6 @@ module.exports = {
     let data = req.body || {};
     let index = null;
     if (!!!data.uid) {
-      // data.uid = base.decTo62(Date.now());
       let d = await getAdmissionNo(data.firstName, data.academicRecord.year, data.academicRecord.course);
       data.uid = d.uid;
       index = d.index;
@@ -138,8 +142,9 @@ module.exports = {
       keyword: 'enrolled_by', content: req.user.uid
     }]
     await destroyUserData(data.uid)
+    let t = await db.sequelize.transaction();
     db.user.create(data, {
-      include: ['identity', 'education', 'academicRecord', 'emergency_contact', 'checklist', 'experience', 'user_meta']
+      include: ['identity', 'education', 'academicRecord', 'emergency_contact', 'checklist', 'experience', 'documents', 'user_meta']
     }).then(async (r) => {
       if (!!index) {
         await db.admission_no_index.findOrCreate({
@@ -152,9 +157,13 @@ module.exports = {
       if (!!data.request && !!data.request.uid) {
         await db.enquiry.destroy({ where: { uid: data.request.uid } })
       }
+      await t.commit();
       return res.send(r)
     })
-      .catch(e => res.sendError(e))
+      .catch(async (e) => {
+        await t.rollback();
+        return res.sendError(e)
+      })
   }
 
 }
