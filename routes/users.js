@@ -34,6 +34,8 @@ router.post('/enquiry', users.setUser);
 router.get('/enrollment/:uid', users.getEnrolment);
 router.post('/enrollment', allowedRoles(['admin', 'hr', 'registrar']), users.setEnrolment);
 router.get('/approve/:uid', allowedRoles(['admin', 'hr', 'registrar']), userAction.approveStudent);
+router.post('/reject', allowedRoles(['admin', 'hr', 'registrar']), userAction.rejectStudent);
+router.get('/activate/:uid', allowedRoles(['admin', 'hr', 'registrar']), userAction.activateStudent);
 router.get('/:role', userTypeAllowedParams, users.getUsers);
 
 module.exports = router;

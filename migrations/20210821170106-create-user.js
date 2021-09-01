@@ -56,7 +56,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       status: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.INTEGER
       },
       role: {
         type: Sequelize.STRING, allowNull: false

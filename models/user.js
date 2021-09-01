@@ -47,10 +47,20 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'uid',
         as: "checklist"
       });
+      this.hasOne(models.experience, {
+        foreignKey: 'user_uid',
+        sourceKey: 'uid',
+        as: "experience"
+      });
       this.hasMany(models.payment, {
         foreignKey: 'admission_no',
         sourceKey: 'uid',
         as: "payments"
+      });
+      this.hasMany(models.user_meta, {
+        foreignKey: 'user_uid',
+        sourceKey: 'uid',
+        as: "user_meta"
       });
     }
   };
@@ -74,7 +84,7 @@ module.exports = (sequelize, DataTypes) => {
     password: { type: DataTypes.STRING },
     role: { type: DataTypes.STRING, allowNull: false },
     lastLogin: { type: DataTypes.DATE },
-    status: { type: DataTypes.BOOLEAN },
+    status: { type: DataTypes.INTEGER },
     picture: { type: DataTypes.STRING },
     faxNo: { type: DataTypes.STRING },
     postboxNo: { type: DataTypes.INTEGER },
