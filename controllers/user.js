@@ -45,7 +45,7 @@ module.exports = {
       where, include: [{
         as: 'academicRecord',
         model: db.academicRecord,
-        attributes: ['user', 'class', 'session', 'year']
+        attributes: ['user', 'course', 'session', 'year']
       }]
     })
       .then(r => res.send(r))
