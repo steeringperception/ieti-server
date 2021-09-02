@@ -42,16 +42,31 @@ module.exports = {
         where.approvalDate = { [Op.eq]: null };
       }
     }
+    let keyword = 'approved_by';
+    if (req.user.role == 'registrar') {
+      keyword = 'enrolled_by';
+    }
+
     db.user.findAll({
-      where, include: [{
-        as: 'academicRecord',
-        model: db.academicRecord,
-        attributes: ['user', 'course', 'session', 'year']
-      }, {
-        model: db.payment, as: 'payment', required: false,
-        where: { payment_cause: 'admission_fees' },
-        attributes: ['admission_no', 'accountant']
-      }]
+      where,
+      include: [
+        {
+          as: 'academicRecord',
+          model: db.academicRecord,
+          attributes: ['user', 'course', 'session', 'year']
+        },
+        {
+          model: db.payment, as: 'payment', required: false,
+          where: { payment_cause: 'admission_fees' },
+          attributes: ['admission_no', 'accountant']
+        },
+        {
+          model: db.user_meta, as: 'userMeta', required: false,
+          where: { keyword: keyword },
+          attributes: ['user_uid', 'content'],
+          include: ['user']
+        },
+      ]
     })
       .then(r => res.send(r))
       .catch(e => res.status(400).send({ error: `${e}` }))

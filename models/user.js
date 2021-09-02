@@ -115,6 +115,9 @@ module.exports = (sequelize, DataTypes) => {
       profile: {
         attributes: { exclude: ['createdAt', 'updatedAt', 'password', 'id'] },
         // include: ['address', 'course']
+      },
+      minimum: {
+        attributes: ['firstName', 'lastName', 'picture'],
       }
     }
   });

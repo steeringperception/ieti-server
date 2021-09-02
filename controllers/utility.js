@@ -3,7 +3,6 @@ var base = require('base-converter');
 
 module.exports = {
   getGlobalList: async (req, res, next) => {
-
     return Promise.all([
       db.class.findAll().catch(e => { return { classes: [] } }),
       db.course.findAll().catch(e => { return { courses: [] } }),
