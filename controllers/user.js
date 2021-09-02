@@ -23,6 +23,7 @@ async function destroyUserData(uid) {
     db.emergency_contacts.destroy({ where: { user_uid: uid }, force: true }),
     db.checklist.destroy({ where: { user_uid: uid }, force: true }),
     db.experience.destroy({ where: { user_uid: uid }, force: true }),
+    db.document.destroy({ where: { user_uid: uid }, force: true }),
     db.user_meta.destroy({ where: { user_uid: uid, keyword: 'enrolled_by' }, force: true })
   ])
 }
@@ -156,7 +157,7 @@ module.exports = {
     data.user_meta = [{
       keyword: 'enrolled_by', content: req.user.uid
     }]
-    await destroyUserData(data.uid)
+    await destroyUserData(data.uid);
     let t = await db.sequelize.transaction();
     db.user.create(data, {
       include: ['identity', 'education', 'academicRecord', 'emergency_contact', 'checklist', 'experience', 'documents', 'user_meta']
