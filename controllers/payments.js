@@ -92,6 +92,7 @@ async function generateInvoice(name, postboxNo, purpose, mode, amount, no) {
         }
         return simpleUpload(`invoice/${no}.pdf`, data, 'application/pdf')
           .then(response => {
+            fs.unlink(path.resolve(__dirname, `../public/invoice/${no}.pdf`), (e, d) => { })
             return res(response.Location);
           })
           .catch(e => {
