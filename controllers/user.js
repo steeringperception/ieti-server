@@ -47,6 +47,11 @@ module.exports = {
     if (req.user.role == 'registrar') {
       keyword = 'enrolled_by';
     }
+    if (req.user.role == 'accountant') {
+      where = {
+        ...where, [Op.and]: db.sequelize.literal('payment.admission_no IS NULL')
+      }
+    }
 
     db.user.findAll({
       where,
@@ -67,7 +72,8 @@ module.exports = {
           attributes: ['user_uid', 'content'],
           include: ['user']
         },
-      ]
+      ],
+      group: ['uid']
     })
       .then(r => res.send(r))
       .catch(e => res.status(400).send({ error: `${e}` }))

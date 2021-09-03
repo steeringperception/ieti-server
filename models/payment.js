@@ -21,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     payment_cause: DataTypes.STRING,
     note: DataTypes.STRING,
     academic_year: DataTypes.STRING,
-    accountant: DataTypes.STRING
+    accountant: DataTypes.STRING,
+    invoice: DataTypes.TEXT,
+    invoice_no: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'payment',

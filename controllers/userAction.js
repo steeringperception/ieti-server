@@ -39,13 +39,14 @@ module.exports = {
         if (!!user) {
           let password = await Buffer.from(req.params.uid).toString('base64').replace('==', '');
           let hash = await bcrypt.hash(password, 10);
-          await user.update({ status: 1, password: hash });
+          await db.user.update({ status: 1, password: hash }, { where: { uid: req.params.uid } });
           await sendMailTemplate('EMAIL_ON_STUDENT_ACTIVATED', user.email, {
             name: `${user.firstName} ${user.lastName}`,
             username: user.email,
             password: password
           }, 'Application Approved')
         }
+        res.send({ status: true })
       })
     } catch (error) {
       return res.sendError(error);
