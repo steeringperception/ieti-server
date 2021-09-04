@@ -136,6 +136,7 @@ module.exports = {
     db.user.findOne({
       where: { uid: req.params.uid },
       include: ['identity', 'education', 'academicRecord', 'emergency_contact', 'checklist', 'experience', 'documents',
+        'payments',
         {
           model: db.payment, as: 'payment', required: false,
           where: { payment_cause: 'admission_fees' },
