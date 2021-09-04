@@ -137,6 +137,11 @@ module.exports = {
       where: { uid: req.params.uid },
       include: ['identity', 'education', 'academicRecord', 'emergency_contact', 'checklist', 'experience', 'documents',
         {
+          model: db.payment, as: 'payment', required: false,
+          where: { payment_cause: 'admission_fees' },
+          attributes: ['admission_no', 'accountant']
+        },
+        {
           model: db.user_meta, as: 'user_meta', required: false,
           where: {
             keyword: { [Op.in]: ['approved_by', 'enrolled_by', 'reject_resion'] }
