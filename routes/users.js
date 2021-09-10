@@ -31,7 +31,7 @@ router.post('/academics/:uid', acadamics.setAcademic);
 router.get('/enquiries', allowedRoles(['admin', 'hr', 'registrar']), enquiry.getUsers);
 router.get('/enquiry/:uid', allowedRoles(['admin', 'hr', 'registrar']), enquiry.getUser);
 router.post('/enquiry', users.setUser);
-router.get('/enrollment/:uid', users.getEnrolment);
+router.get('/enrollment/:uid?', users.getEnrolment);
 router.post('/enrollment', allowedRoles(['admin', 'hr', 'registrar']), users.setEnrolment);
 router.get('/approve/:uid', allowedRoles(['registrar']), userAction.approveStudent);
 router.post('/reject', allowedRoles(['registrar']), userAction.rejectStudent);

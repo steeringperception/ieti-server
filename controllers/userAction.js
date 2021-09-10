@@ -37,7 +37,7 @@ module.exports = {
     try {
       return db.user.findOne({ where: { uid: req.params.uid } }).then(async (user) => {
         if (!!user) {
-          let password = await Buffer.from(req.params.uid).toString('base64').replace('==', '');
+          let password = await Buffer.from(req.params.uid).toString('base64').replace(/=/g, '');
           let hash = await bcrypt.hash(password, 10);
           await db.user.update({ status: 1, password: hash }, { where: { uid: req.params.uid } });
           await sendMailTemplate('EMAIL_ON_STUDENT_ACTIVATED', user.email, {

@@ -133,8 +133,12 @@ module.exports = {
       .catch(e => res.status(400).send({ error: `${e}` }))
   },
   getEnrolment: (req, res, next) => {
+    let uid = req.user.uid;
+    if (!!req.params && !!req.params.uid) {
+      uid = req.params.uid
+    }
     db.user.findOne({
-      where: { uid: req.params.uid },
+      where: { uid: uid },
       include: ['identity', 'education', 'academicRecord', 'emergency_contact', 'checklist', 'experience', 'documents',
         'payments',
         {
