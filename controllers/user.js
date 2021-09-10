@@ -81,8 +81,11 @@ module.exports = {
   setUser: async (req, res, next) => {
     let data = req.body || {};
     if (!!!data.uid) {
-      // data.uid = base.decTo62(Date.now());
-      return res.sendStatus(403)
+      if (data.role == 'student') {
+        return res.sendStatus(403);
+      } else {
+        data.uid = base.decTo62(Date.now());
+      }
     }
     db.user.scope('').findOrCreate({
       where: {
@@ -106,7 +109,6 @@ module.exports = {
     if (!!req.query && !!req.query.include) {
       include = req.query.include.split(',');
     }
-    console.log(include)
     return db.user.findOne({
       where: {
         uid: req.params.uid,

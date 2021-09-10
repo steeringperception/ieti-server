@@ -8,6 +8,7 @@ module.exports = {
     let { loginId, password } = req.body || {};
     db.user.scope('').findOne({
       where: {
+        status: 1,
         [Op.or]: [
           { email: loginId }, { phone: loginId }
         ]

@@ -51,6 +51,31 @@ module.exports = {
     } catch (error) {
       return res.sendError(error);
     }
+  },
+
+  toggleStatus: async (req, res, next) => {
+    try {
+      return db.user.findOne({ where: { uid: req.body.uid } }).then(async (user) => {
+        if (!!user) {
+          if (!!req.body.status) {
+            let password = await Buffer.from(req.body.uid).toString('base64').replace(/=/g, '');
+            let hash = await bcrypt.hash(password, 10);
+            await db.user.update({ status: 1, password: hash, status: 1 }, { where: { uid: req.body.uid } });
+            await sendMailTemplate('EMAIL_ON_STUDENT_ACTIVATED', user.email, {
+              name: `${user.firstName} ${user.lastName}`,
+              username: user.email,
+              password: password
+            }, 'Application Approved')
+          } else {
+            await db.user.update({ status: 0, password: null }, { where: { uid: req.body.uid } });
+
+          }
+        }
+        res.send({ status: true })
+      })
+    } catch (error) {
+      return res.sendError(error);
+    }
   }
 
 }
