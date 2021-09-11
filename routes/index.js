@@ -7,6 +7,7 @@ var enquiry = require('../controllers/enquiry');
 var file = require('./file');
 var payments = require('./payments');
 var student = require('./student');
+var academics = require('./academics');
 var test = require('./test');
 
 const { auth } = require('../middleware/auth');
@@ -18,6 +19,7 @@ router.post('/update-security', auth, authentication.changeSecurity)
 router.use('/users', auth, user);
 router.use('/payments', auth, payments);
 router.use('/student', auth, student);
+router.use('/academics', academics);
 
 router.use('/files', file)
 router.use('/test', test)

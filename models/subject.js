@@ -10,13 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      subject.belongsTo(models.semester, {
+        foreignKey: 'semester',
+        targetKey: 'uid',
+        as: 'Semester'
+      });
+      subject.belongsTo(models.course, {
+        foreignKey: 'course',
+        targetKey: 'uid',
+        as: 'Course'
+      })
     }
   };
   subject.init({
-    uid: DataTypes.STRING,
+    uid: { type: DataTypes.STRING, unique: true, allowNull: false },
     title: DataTypes.STRING,
-    course: DataTypes.STRING
+    course: DataTypes.STRING,
+    semester: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'subject',

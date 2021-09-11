@@ -93,7 +93,10 @@ module.exports = {
       },
       defaults: data
     }).then(async (r) => {
-      await r[0].update(data)
+      await r[0].update(data);
+      if (req.user.role == 'hr' && !!data.course && data.role == 'hod') {
+        await db.course.update({ hod: data.uid }, { where: { uid: data.course } })
+      }
       res.send(r[0])
     })
       .catch(e => res.sendError(e))
@@ -115,7 +118,16 @@ module.exports = {
       },
       include
     })
-      .then(r => res.send(r))
+      .then(async (r) => {
+        let rs = JSON.parse(JSON.stringify(r))
+        if (rs.role == "hod") {
+          let courseD = await db.course.findOne({ where: { hod: rs.uid } });
+          if (!!courseD) {
+            rs.course = courseD.uid
+          }
+        }
+        return res.send(rs)
+      })
       .catch(e => res.status(400).send({ error: `${e}` }))
   },
   getUserByUidForPayment: (req, res, next) => {

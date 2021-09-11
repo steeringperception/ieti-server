@@ -10,11 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      course.belongsTo(models.user.scope('minimum'), {
+        foreignKey: 'hod',
+        targetKey: 'uid',
+        as: 'HOD'
+      })
     }
   };
   course.init({
-    uid: DataTypes.STRING,
+    uid: { type: DataTypes.STRING, unique: true, allowNull: false },
     title: DataTypes.STRING,
     hod: DataTypes.STRING
   }, {

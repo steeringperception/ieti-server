@@ -17,6 +17,9 @@ module.exports = {
       course: {
         type: Sequelize.STRING
       },
+      semester: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

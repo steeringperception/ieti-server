@@ -7,8 +7,9 @@ module.exports = {
       db.class.findAll().catch(e => { return { classes: [] } }),
       db.course.findAll().catch(e => { return { courses: [] } }),
       db.academic_year.findAll().catch(e => { return { academic_years: [] } }),
-    ]).then(([classes, courses, academic_years]) => {
-      res.send({ classes, courses, academic_years })
+      db.semester.findAll().catch(e => { return { semesters: [] } }),
+    ]).then(([classes, courses, academic_years, semesters]) => {
+      res.send({ classes, courses, academic_years, semesters })
     })
   }
 }
