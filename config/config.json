@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "ieti",
+    "host": "127.0.0.1",
+    "dialect": "mariadb",
+    "logging": false
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "admin",
+    "password": "xpfVcjsIKAmQ2N8eUwGT",
+    "database": "ieti",
+    "host": "ieti.cifbesxhagnh.us-east-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  }
+}
