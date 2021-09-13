@@ -17,6 +17,13 @@ module.exports = {
       if (!!r) {
         let { firstName, lastName, uid, role, email, phone, gender, dob, picture } = r;
         let user = { firstName, lastName, uid, password, role, email, phone, gender, dob, hash: r.password, picture }
+        if (role == 'student') {
+          let academicRecord = await db.academicRecord.findOne({ where: { user: uid }, attributes: ['semester', 'course', 'year'] });
+          if (!!academicRecord) {
+            academicRecord = JSON.parse(JSON.stringify(academicRecord));
+            user.academicRecord = academicRecord;
+          }
+        }
         return sign(user)
           .then(r => res.set('authorization', r.token).send(r.user))
           .catch(e => res.status(403).send(e))

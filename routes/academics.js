@@ -17,10 +17,10 @@ const userTypeAllowedParams = (req, res, next) => {
 
 
 router.get('/structure', acadamics.academicStructure);
-router.get('/structure/:type', acadamics.getStructure);
-router.post('/structure/:type', acadamics.addStructure);
-router.delete('/structure/:model/:uid', acadamics.deleteEntity);
+router.get('/entity/:type', acadamics.getStructure);
+router.post('/entity/:type', allowedRoles(['hr', 'admin']), acadamics.addStructure);
+router.delete('/entity/:model/:uid', acadamics.deleteEntity);
 router.get('/:uid', acadamics.getAcademic);
-router.post('/:uid', acadamics.setAcademic);
+router.post('/:uid', allowedRoles(['hr', 'admin']), acadamics.setAcademic);
 
 module.exports = router;

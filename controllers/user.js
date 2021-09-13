@@ -103,7 +103,21 @@ module.exports = {
   },
 
   refreshUserData: (req, res, next) => {
-    return db.user.findOne({ where: { uid: req.user.uid } })
+    return db.user.findOne({
+      attributes: ['firstName', 'lastName', 'uid', 'role', 'email', 'phone', 'gender', 'dob', 'picture'],
+      where: { uid: req.user.uid }
+    })
+      .then(async (rr) => {
+        rr = JSON.parse(JSON.stringify(rr));
+        if (rr.role == 'student') {
+          let academicRecord = await db.academicRecord.findOne({ where: { user: rr.uid }, attributes: ['semester', 'course', 'year'] });
+          if (!!academicRecord) {
+            academicRecord = JSON.parse(JSON.stringify(academicRecord));
+            rr.academicRecord = academicRecord;
+          }
+        }
+        return rr;
+      })
       .then(r => res.send(r))
       .catch(e => res.status(400).send({ error: `${e}` }))
   },

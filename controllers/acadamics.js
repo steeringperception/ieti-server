@@ -1,8 +1,9 @@
 const db = require('../models')
 var base = require('base-converter');
 
-async function getCourses() {
+async function getCourses(cond = {}) {
   return db.course.findAll({
+    where: cond,
     attributes: { include: [[db.sequelize.fn('concat_ws', ' ', db.sequelize.col('HOD.firstName'), db.sequelize.col('HOD.lastName')), 'hodName']] },
     include: {
       model: db.user,
@@ -10,8 +11,9 @@ async function getCourses() {
     }
   });
 }
-async function getSemesters() {
+async function getSemesters(cond = {}) {
   return db.semester.findAll({
+    where: cond,
     attributes: { include: [[db.sequelize.col('Course.title'), 'courseName']] },
     include: {
       model: db.course,
@@ -19,8 +21,9 @@ async function getSemesters() {
     }
   });
 }
-async function getSubjects() {
+async function getSubjects(cond = {}) {
   return db.subject.findAll({
+    where: cond,
     attributes: {
       include: [
         [db.sequelize.col('Course.title'), 'courseName'],
@@ -62,14 +65,20 @@ module.exports = {
   getStructure: async (req, res, next) => {
     let inst = Promise.resolve([]);
     let params = req.params || {};
+    let cd = {};
+    let query = req.query || {};
+    let { course, semester, subject, session } = query;
     if (params.type == 'courses') {
       inst = getCourses();
     }
     if (params.type == 'semesters') {
-      inst = getSemesters();
+      if (!!course) cd = { course }
+      inst = getSemesters(cd);
     }
     if (params.type == 'subjects') {
-      inst = getSubjects();
+      if (!!course) cd.course = course;
+      if (!!semester) cd.semester = semester;
+      inst = getSubjects(cd);
     }
     inst.then(r => res.send(r)).catch(e => res.sendError(e))
   },
