@@ -82,6 +82,16 @@ module.exports = {
     }
     inst.then(r => res.send(r)).catch(e => res.sendError(e))
   },
+  getentityByid: async (req, res, next) => {
+    let params = req.params || {};
+    if (!!!params.model || !!!params.id) {
+      return res.sendStatus(404)
+    }
+    console.log(params)
+    return db[params.model].findOne({ where: { id: params.id } })
+      .then(r => res.send(r))
+      .catch(r => res.sendError(r))
+  },
   addStructure: async (req, res, next) => {
     let model = req.params.type;
     let data = req.body;
@@ -116,5 +126,44 @@ module.exports = {
     return db[params.model].destroy({ where: { uid: params.uid } })
       .then(r => res.send({ status: true }))
       .catch(r => res.sendError(r))
+  },
+  addSchedules: async (req, res, next) => {
+    let data = req.body || {};
+    db.schedule.findOrCreate({
+      where: { semester: data.semester, course: data.course, subject: data.subject },
+      defaults: data
+    })
+      .then(re => {
+        re[0].update(data);
+        return re[0];
+      })
+      .then(r => {
+        res.send(r)
+      })
+      .catch(r => res.sendError(r))
+  },
+  getSchedules: async (req, res, next) => {
+    let params = req.params || {};
+    let where = {};
+    if (!!params.course) {
+      where.course = params.course;
+    }
+    db.schedule.findAll({
+      where,
+      attributes: {
+        include: [
+          [db.sequelize.col('Subject.title'), 'subjectName'],
+          [db.sequelize.fn('concat_ws', ' ',
+            db.sequelize.col('Teacher.firstName'),
+            db.sequelize.col('Teacher.lastName')
+          ), 'teacherName']
+        ]
+      },
+      include: [
+        { as: 'Teacher', model: db.user, attributes: [] },
+        { as: 'Subject', model: db.subject, attributes: [] }
+      ]
+    }).then(e => res.send(e)).catch(r => res.sendError(r));
   }
+
 }

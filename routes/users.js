@@ -7,6 +7,7 @@ var userAction = require('../controllers/userAction');
 var address = require('../controllers/address');
 var acadamics = require('../controllers/acadamics');
 var enquiry = require('../controllers/enquiry');
+const authentication = require('../controllers/authentication');
 
 const userTypeAllowedParams = (req, res, next) => {
   if (
@@ -21,7 +22,7 @@ const userTypeAllowedParams = (req, res, next) => {
 
 router.get('/', users.getUsers);
 router.post('/', allowedRoles(['admin', 'hr', 'registrar'], 'uid'), users.setUser);
-router.get('/refresh', users.refreshUserData);
+router.get('/refresh', authentication.refreshUserData);
 router.get('/by-uid/:uid', allowedRoles(['admin', 'accountant', 'registrar', 'hr'], 'uid'), users.getUserByUid);
 router.get('/pay-for/:uid', allowedRoles(['admin', 'accountant', 'registrar'], 'uid'), users.getUserByUidForPayment);
 router.get('/address/:uid', address.getAddress);

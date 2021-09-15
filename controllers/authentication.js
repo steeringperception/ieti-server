@@ -24,6 +24,13 @@ module.exports = {
             user.academicRecord = academicRecord;
           }
         }
+        if (role == 'hod') {
+          let course = await db.course.findOne({ where: { hod: uid } });
+          if (!!course) {
+            course = JSON.parse(JSON.stringify(course));
+            user.department = course.uid;
+          }
+        }
         return sign(user)
           .then(r => res.set('authorization', r.token).send(r.user))
           .catch(e => res.status(403).send(e))
@@ -34,6 +41,32 @@ module.exports = {
   },
   logout: (req, res, next) => {
 
+  },
+  refreshUserData: (req, res, next) => {
+    return db.user.findOne({
+      attributes: ['firstName', 'lastName', 'uid', 'role', 'email', 'phone', 'gender', 'dob', 'picture'],
+      where: { uid: req.user.uid }
+    })
+      .then(async (rr) => {
+        rr = JSON.parse(JSON.stringify(rr));
+        if (rr.role == 'student') {
+          let academicRecord = await db.academicRecord.findOne({ where: { user: rr.uid }, attributes: ['semester', 'course', 'year'] });
+          if (!!academicRecord) {
+            academicRecord = JSON.parse(JSON.stringify(academicRecord));
+            rr.academicRecord = academicRecord;
+          }
+        }
+        if (rr.role == 'hod') {
+          let course = await db.course.findOne({ where: { hod: rr.uid } });
+          if (!!course) {
+            course = JSON.parse(JSON.stringify(course));
+            rr.department = course.uid;
+          }
+        }
+        return rr;
+      })
+      .then(r => res.send(r))
+      .catch(e => res.status(400).send({ error: `${e}` }))
   },
   changeSecurity: (req, res, next) => {
     let { new_password, confirm_password, current_password } = req.body || {};

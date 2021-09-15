@@ -4,9 +4,9 @@ const { auth } = require('../middleware/auth');
 const allowedRoles = require('../middleware/roles');
 var acadamics = require('../controllers/acadamics');
 
-const userTypeAllowedParams = (req, res, next) => {
+const modeAllowed = (req, res, next) => {
   if (
-    ['teacher', 'student', 'admin', 'hr', 'hod', 'registrar', 'accountant'].includes(req.params.role)
+    ['subject', 'course', 'semester', 'schedule'].includes(req.params.model)
   ) {
     return next()
   } else {
@@ -18,8 +18,11 @@ const userTypeAllowedParams = (req, res, next) => {
 
 router.get('/structure', acadamics.academicStructure);
 router.get('/entity/:type', acadamics.getStructure);
-router.post('/entity/:type', allowedRoles(['hr', 'admin']), acadamics.addStructure);
-router.delete('/entity/:model/:uid', acadamics.deleteEntity);
+router.get('/entity/:model/:id', modeAllowed, acadamics.getentityByid);
+router.post('/entity/:type', modeAllowed, allowedRoles(['hr', 'admin']), acadamics.addStructure);
+router.delete('/entity/:model/:uid', modeAllowed, acadamics.deleteEntity);
+router.post('/schedule', acadamics.addSchedules);
+router.get('/schedules', acadamics.getSchedules);
 router.get('/:uid', acadamics.getAcademic);
 router.post('/:uid', allowedRoles(['hr', 'admin']), acadamics.setAcademic);
 
