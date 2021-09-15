@@ -19,6 +19,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'course',
         targetKey: 'uid',
         as: 'Course'
+      });
+      subject.belongsToMany(models.user, {
+        foreignKey: 'subject',
+        targetKey: 'uid',
+        otherKey: 'teacher',
+        sourceKey: 'uid',
+        through: models.schedule,
+        as: 'Teacher'
       })
     }
   };

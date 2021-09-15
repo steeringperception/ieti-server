@@ -27,7 +27,11 @@ async function getSubjects(cond = {}) {
     attributes: {
       include: [
         [db.sequelize.col('Course.title'), 'courseName'],
-        [db.sequelize.col('Semester.title'), 'semesterName']
+        [db.sequelize.col('Semester.title'), 'semesterName'],
+        [db.sequelize.fn('concat_ws', ' ',
+          db.sequelize.col('Teacher.firstName'),
+          db.sequelize.col('Teacher.lastName')
+        ), 'teacherName']
       ]
     },
     include: [{
@@ -37,7 +41,12 @@ async function getSubjects(cond = {}) {
     {
       model: db.semester,
       as: 'Semester', attributes: []
-    }]
+    },
+    {
+      model: db.user,
+      as: 'Teacher', attributes: []
+    }
+    ]
   })
 }
 
