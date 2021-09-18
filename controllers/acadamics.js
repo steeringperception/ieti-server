@@ -102,7 +102,7 @@ module.exports = {
       .catch(r => res.sendError(r))
   },
   addStructure: async (req, res, next) => {
-    let model = req.params.type;
+    let model = req.params.model;
     let data = req.body;
     if (!!!model || !!!data) {
       return res.status(400).send({ error: "Invalid Payload" })

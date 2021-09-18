@@ -16,7 +16,7 @@ module.exports = {
     // if (params.uid) {
     //   where.admission_no = `${params.uid}`;
     // }
-    let sql = `SELECT p.admission_no,paid_amount,payment_mode,payment_cause,p.createdAt,firstName,lastName,email,class,course,academic_year FROM payments p
+    let sql = `SELECT p.admission_no,paid_amount,payment_mode,payment_cause,p.createdAt,firstName,lastName,email,course,academic_year FROM payments p
             JOIN users u ON u.uid = p.admission_no
             LEFT JOIN academic_records ar ON ar.user = p.admission_no
             where payment_mode like "%${(params.mode || '')}%" and admission_no like "%${(params.uid || '')}"`;

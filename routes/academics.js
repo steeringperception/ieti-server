@@ -19,7 +19,7 @@ const modeAllowed = (req, res, next) => {
 router.get('/structure', acadamics.academicStructure);
 router.get('/entity/:type', acadamics.getStructure);
 router.get('/entity/:model/:id', modeAllowed, acadamics.getentityByid);
-router.post('/entity/:type', modeAllowed, allowedRoles(['hr', 'admin']), acadamics.addStructure);
+router.post('/entity/:model', modeAllowed, allowedRoles(['hr', 'admin']), acadamics.addStructure);
 router.delete('/entity/:model/:uid', modeAllowed, acadamics.deleteEntity);
 router.post('/schedule', acadamics.addSchedules);
 router.get('/schedules', acadamics.getSchedules);
