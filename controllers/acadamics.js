@@ -153,10 +153,23 @@ module.exports = {
   },
   getSchedules: async (req, res, next) => {
     let params = req.params || {};
+    let query = req.query || {};
     let where = {};
     if (!!params.course) {
       where.course = params.course;
     }
+    if (!!query.semester) {
+      where.semester = query.semester;
+    }
+    if (req.user.role == 'teacher') {
+      where = { teacher: req.user.uid }
+    }
+    if (req.user.role == 'student') {
+      where = {
+        semester: req.user.academicRecord.semester, course: req.user.academicRecord.course
+      }
+    }
+    console.log(req.user)
     db.schedule.findAll({
       where,
       attributes: {
