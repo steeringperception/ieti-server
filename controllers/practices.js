@@ -25,16 +25,59 @@ module.exports = {
     if (!!params.subject) {
       where.subject = params.subject;
     }
+    let attrInclude = [
+      [
+        db.sequelize.fn('concat_ws', ' ',
+          db.sequelize.col('Teacher.firstName'),
+          db.sequelize.col('Teacher.lastName')),
+        'teacherName'
+      ]
+    ];
+    let include = [
+      {
+        model: db.user,
+        as: 'Teacher', attributes: []
+      }
+    ];
+    if (req.user.role == 'student') {
+      attrInclude.push(
+        [
+          db.sequelize.col('submission.createdAt'),
+          'submitted'
+        ]
+      );
+      include.push(
+        {
+          model: db.submission,
+          required: false, seperate: true,
+          as: 'submission', where: { student_uid: req.user.uid },
+          attributes: []
+        }
+      )
+    } else {
+      attrInclude.push(
+        [
+          db.sequelize.fn('count',
+            db.sequelize.col('Submissions.id')),
+          'submitted'
+        ]
+      );
+      include.push(
+        {
+          model: db.submission,
+          required: false, seperate: true,
+          as: 'Submissions', attributes: []
+        }
+      )
+    }
+
     return db.practice.findAll({
       where,
       attributes: {
-        include: [[db.sequelize.fn('concat_ws', ' ', db.sequelize.col('Teacher.firstName'), db.sequelize.col('Teacher.lastName')), 'teacherName']],
-        exclude: ['updatedAt', 'content', 'attachments']
+        include: attrInclude,
+        exclude: ['updatedAt', 'content']
       },
-      include: {
-        model: db.user,
-        as: 'Teacher', attributes: []
-      },
+      include: include,
       order: [['createdAt', 'DESC']]
     }).then(r => res.send(r)).catch(e => res.sendError(e))
   },

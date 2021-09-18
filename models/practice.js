@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       practice.hasOne(models.submission, {
         foreignKey: 'practice_id',
         as: 'submission'
+      });
+      practice.hasMany(models.submission, {
+        foreignKey: 'practice_id',
+        as: 'Submissions'
       })
     }
   };

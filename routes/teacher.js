@@ -17,6 +17,9 @@ const modeAllowed = (req, res, next) => {
 
 
 router.get('/subjects', teacher.subjects);
+router.get('/submissions', teacher.submissions);
+router.get('/submissions/:practiceId', teacher.submissions);
+router.post('/submissions/award-marks', allowedRoles(['teacher']), teacher.awardMarks);
 
 
 module.exports = router;

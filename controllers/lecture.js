@@ -15,6 +15,9 @@ module.exports = {
     if (!!query.type) {
       where.type = query.type;
     }
+    if (!!query.teacher) {
+      where.teacher = query.teacher;
+    }
     // if (!!query.session) {
     //   where.session = query.session;
     // }
@@ -27,11 +30,19 @@ module.exports = {
     if (!!params.subject) {
       where.subject = params.subject;
     }
-    console.log(where)
 
     return db.lecture.findAll({
       where,
-      attributes: { include: [[db.sequelize.fn('concat_ws', ' ', db.sequelize.col('Teacher.firstName'), db.sequelize.col('Teacher.lastName')), 'teacherName']] },
+      attributes: {
+        include: [
+          [
+            db.sequelize.fn('concat_ws', ' ',
+              db.sequelize.col('Teacher.firstName'),
+              db.sequelize.col('Teacher.lastName')),
+            'teacherName'
+          ]
+        ]
+      },
       include: {
         model: db.user,
         as: 'Teacher', attributes: []

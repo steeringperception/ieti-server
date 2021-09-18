@@ -1,5 +1,7 @@
 const { simpleUpload } = require('../lib');
 const formidable = require('formidable');
+const db = require('../models');
+const { Op } = require('sequelize');
 
 module.exports = {
   upload1: (req, res, next) => {
@@ -52,4 +54,27 @@ module.exports = {
       }
     });
   },
+  uploadBuffer: (req, res, next) => {
+    let data = req.body || { imageBinary: '', path: 'avatar' };
+    try {
+      let buf = Buffer.from(data.imageBinary.replace(/^data:image\/\w+;base64,/, ""), 'base64')
+      let type = data.imageBinary.substring(data.imageBinary.indexOf(":") + 1, data.imageBinary.indexOf(';'))
+      let Key = `${data.path || 'avatar'}/${req.user.uid}.${type.replace('image/', '')}`;
+      simpleUpload(Key, buf, type)
+        .then(async (response) => {
+          if (data.path == 'avatar' && !!response.Location) {
+            await db.user.update({ picture: response.Location }, { where: { uid: req.user.uid } })
+          }
+          res.send(response)
+        })
+        .catch(r => {
+          console.log(r)
+          res.sendError(r)
+        })
+    } catch (error) {
+      console.log(error);
+      res.sendError(error)
+    }
+
+  }
 }
