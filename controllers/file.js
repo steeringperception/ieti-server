@@ -1,5 +1,6 @@
 const { simpleUpload } = require('../lib');
 const formidable = require('formidable');
+var base = require('base-converter');
 const db = require('../models');
 const { Op } = require('sequelize');
 
@@ -25,14 +26,14 @@ module.exports = {
         });
       }
 
-
+      let fx = base.decTo62(Date.now());
       var fileName = '';
       let filePath = files.file.path;
       let type = files.file.type;
       if (!!files.file) {
         fileName = files.file.name;
         let folder = fields.path || 'storage';
-        const key = `${folder}/${fileName}`;
+        const key = `${fx}fx_${folder}/${fileName}`;
         var fs = require('fs');
         fs.readFile(filePath, function (err, data) {
           if (err) {

@@ -44,5 +44,16 @@ module.exports = {
     db.submission.update({ marks: req.body.marks, result: (req.body.result || '') }, { where: { id: req.body.id } })
       .then(resp => res.send(resp))
       .catch(resp => res.sendError(resp))
+  },
+  addPractice: async (req, res, next) => {
+    let data = req.body || {};
+    let inst;
+    data.teacher = req.user.uid;
+    if (!!data.id) {
+      inst = db.practice.update(data, { where: { id: data.id } })
+    } else {
+      inst = db.practice.create(data);
+    }
+    inst.then(resp => res.send(resp)).catch(e => res.sendError(e))
   }
 }
