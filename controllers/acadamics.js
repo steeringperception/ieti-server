@@ -169,11 +169,11 @@ module.exports = {
         semester: req.user.academicRecord.semester, course: req.user.academicRecord.course
       }
     }
-    console.log(req.user)
     db.schedule.findAll({
       where,
       attributes: {
         include: [
+          ["id", "id"],
           [db.sequelize.col('Subject.title'), 'subjectName'],
           [db.sequelize.fn('concat_ws', ' ',
             db.sequelize.col('Teacher.firstName'),
