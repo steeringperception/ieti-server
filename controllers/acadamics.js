@@ -1,5 +1,6 @@
 const db = require('../models')
 var base = require('base-converter');
+const { Op } = require('sequelize');
 
 async function getCourses(cond = {}) {
   return db.course.findAll({
@@ -168,6 +169,12 @@ module.exports = {
       where = {
         semester: req.user.academicRecord.semester, course: req.user.academicRecord.course
       }
+    }
+    if (!!query.startTime) {
+      where.startTime = { [Op.gte]: db.sequelize.fn('TIME', (new Date(query.startTime).toTimeString())) }
+    }
+    if (!!query.endTime) {
+      where.endTime = { [Op.lte]: db.sequelize.fn('TIME', (new Date(query.endTime).toTimeString())) }
     }
     db.schedule.findAll({
       where,

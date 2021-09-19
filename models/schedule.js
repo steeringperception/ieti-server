@@ -4,11 +4,6 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class schedule extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       schedule.belongsTo(models.semester, {
         foreignKey: 'semester',
@@ -38,8 +33,20 @@ module.exports = (sequelize, DataTypes) => {
     semester: DataTypes.STRING,
     subject: DataTypes.STRING,
     session: DataTypes.STRING,
-    startTime: DataTypes.STRING,
-    endTime: DataTypes.STRING,
+    startTime: {
+      type: DataTypes.TIME,
+      get() {
+        let tm = this.getDataValue('startTime');
+        return tTrim(tm);
+      }
+    },
+    endTime: {
+      type: DataTypes.TIME,
+      get() {
+        let tm = this.getDataValue('endTime');
+        return tTrim(tm);
+      }
+    },
     days: DataTypes.JSON
   }, {
     sequelize,
@@ -47,3 +54,10 @@ module.exports = (sequelize, DataTypes) => {
   });
   return schedule;
 };
+
+function tTrim(tm) {
+  if (!!!tm) return t;
+  let t = tm.split(":");
+  t.pop();
+  return t.join(":")
+}

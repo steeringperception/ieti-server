@@ -10,6 +10,7 @@ var student = require('./student');
 var academics = require('./academics');
 var classRoom = require('./classRoom');
 var teacher = require('./teacher');
+var dashboard = require('./dashboard');
 var test = require('./test');
 
 const { auth } = require('../middleware/auth');
@@ -24,6 +25,7 @@ router.use('/student', auth, student);
 router.use('/academics', auth, academics);
 router.use('/class-room', auth, classRoom);
 router.use('/teacher', auth, teacher);
+router.use('/dashboard', auth, dashboard);
 
 router.use('/files', file)
 router.use('/test', test)
